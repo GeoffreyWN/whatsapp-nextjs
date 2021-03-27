@@ -1,15 +1,15 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Sidebar from '../components/Sidebar'
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
-        <title>Create Next App</title>
+        <title>Whatsapp-Nextjs</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-     <h1>Let's get started</h1>
+     <Sidebar/>
     </div>
   )
 }
