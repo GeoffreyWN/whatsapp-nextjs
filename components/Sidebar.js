@@ -9,12 +9,14 @@ import { auth, db } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { DockSharp } from "@material-ui/icons";
+import Chat from "./Chat";
 
 
 const Sidebar = () => {
   const [user] = useAuthState(auth)
   const userChatRef = db.collection('chats').where('users', 'array-contains', user.email)
   const [chatsSnapshot] = useCollection(userChatRef);
+  // console.log(chatsSnapshot)
 
   const createChat = () => {
     const input = prompt('Enter contact email address');
@@ -36,7 +38,7 @@ const Sidebar = () => {
   return (
     <Container>
       <Header>
-        <UserAvatar onClick={() => auth.signOut()} />
+        <UserAvatar src={user.photoURL} onClick={() => auth.signOut()} />
         <IconsContainer>
           <IconButton>
             <ChatIcon />
@@ -53,7 +55,7 @@ const Sidebar = () => {
       <SidebarButton onClick={createChat}>Start a new chat</SidebarButton>
 
         {chatsSnapshot?.docs.map(chat => (
-          <CHat key={chat.id} id={chat.id} users={chat.data().users} />
+          <Chat key={chat.id} id={chat.id} users={chat.data().users} />
         ))}
 
 
@@ -63,7 +65,21 @@ const Sidebar = () => {
 
 export default Sidebar;
 
-const Container = styled.div``;
+const Container = styled.div`
+  flex: 0.45;
+  border-right: 1px solid whitesmoke;
+  height: 100vh;
+  min-width: 300px;
+  max-width: 350px;
+  overflow-y: scroll;
+
+  ::-webkit-scrollbar{
+    display: none;
+  }
+
+  -ms-overflow-style: none; //ie & edge
+  scrollbar-width: none; //firefox
+`;
 
 const Header = styled.div`
   display: flex;
